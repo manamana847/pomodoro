@@ -1,0 +1,97 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>ポモドーロ</title><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="theme-color" content="#14163a"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ポモドーロ"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*:before,*:after{box-sizing:inherit}
+:root,[data-t=elegant]{--bg:#f6f1ea;--fg:#3a2f2a;--card:#fffaf2;--accent:#b08d57;--track:#e7dccb;--ff:'Shippori Mincho','Hiragino Mincho ProN',serif;--rad:18px;--bd:1px solid #e2d5c0;--sh:0 6px 24px rgba(120,90,50,.12);--btn:#3a2f2a;--btnfg:#fffaf2;--mut:#8a7a6a}
+body[data-t=game]{--bg:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px) 0 0/24px 24px,linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px) 0 0/24px 24px,#14163a;--fg:#fff;--card:#232657;--accent:#ffd54a;--track:#3b3f86;--ff:'DotGothic16','Hiragino Sans',sans-serif;--rad:4px;--bd:3px solid #fff;--sh:4px 4px 0 #000;--btn:#ffd54a;--btnfg:#14163a;--mut:#aab0ff}
+body[data-t=land]{--bg:radial-gradient(120% 40% at 15% 100%,#5f9e58 60%,transparent 61%),radial-gradient(120% 45% at 95% 100%,#7db86f 60%,transparent 61%),linear-gradient(#a9dcf5,#e8f7ef 70%);--fg:#24402a;--card:rgba(255,255,255,.82);--accent:#2f9a57;--track:#dcecd3;--ff:'Hiragino Maru Gothic ProN','Hiragino Sans',sans-serif;--rad:20px;--bd:1px solid rgba(255,255,255,.8);--sh:0 6px 24px rgba(30,80,40,.18);--btn:#2f7d4f;--btnfg:#fff;--mut:#5b7a60}
+body[data-t=sky]{--bg:radial-gradient(ellipse 140px 40px at 20% 18%,#fff,transparent),radial-gradient(ellipse 180px 50px at 75% 30%,rgba(255,255,255,.9),transparent),radial-gradient(ellipse 120px 36px at 40% 60%,rgba(255,255,255,.8),transparent),linear-gradient(#3d8fe6,#9ed2ff 60%,#eaf6ff);--fg:#12385e;--card:rgba(255,255,255,.8);--accent:#2f86e0;--track:#d7e9fb;--ff:'Hiragino Maru Gothic ProN','Hiragino Sans',sans-serif;--rad:22px;--bd:1px solid #fff;--sh:0 6px 24px rgba(20,60,120,.2);--btn:#2f86e0;--btnfg:#fff;--mut:#4b6f94}
+body[data-t=sea]{--bg:radial-gradient(circle at 50% 0,transparent 14px,rgba(255,255,255,.14) 15px 17px,transparent 18px) 0 0/44px 22px,linear-gradient(#aef0ff 0,#2aa7d6 30%,#0a4f84 100%);--fg:#fff;--card:rgba(5,50,90,.55);--accent:#7ff0ff;--track:rgba(255,255,255,.2);--ff:'Hiragino Maru Gothic ProN','Hiragino Sans',sans-serif;--rad:22px;--bd:1px solid rgba(255,255,255,.35);--sh:0 6px 24px rgba(0,30,60,.35);--btn:#fff;--btnfg:#0a4f84;--mut:#bfe9ff}
+body{margin:0;min-height:100vh;background:var(--bg);background-attachment:fixed;color:var(--fg);font-family:var(--ff);transition:background .4s}
+.w{max-width:560px;margin:0 auto;padding:14px;display:grid;gap:14px}
+.card{background:var(--card);border:var(--bd);border-radius:var(--rad);box-shadow:var(--sh);padding:16px;backdrop-filter:blur(6px)}
+header{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}h1{font-size:1.3rem;margin:0}h2{font-size:1rem;margin:0 0 10px}
+#lv{padding:6px 12px;font-size:.85rem}
+button,input,select{font:inherit;color:inherit}
+.ch,.b{cursor:pointer;border:var(--bd);border-radius:calc(var(--rad)/1.5);background:transparent;padding:7px 12px;margin:3px}
+.ch i{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--c);margin-right:6px}
+.ch.on{background:var(--accent);color:var(--btnfg)}
+.ch b{margin-left:8px;opacity:.7}
+.b{background:var(--btn);color:var(--btnfg);padding:12px 22px;font-size:1.05rem}.b.s{background:transparent;color:var(--fg)}
+.rw{position:relative;width:min(78vw,300px);margin:12px auto}svg{width:100%;display:block}
+.tr,#pg{fill:none;stroke-width:14}.tr{stroke:var(--track)}#pg{stroke-linecap:round;transition:stroke-dashoffset .3s linear;filter:drop-shadow(0 0 5px var(--accent))}
+[data-t=game] #pg{stroke-linecap:butt}
+#dg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:3.2rem;font-variant-numeric:tabular-nums}#dg small{font-size:.9rem;color:var(--mut)}
+.bt{text-align:center}.t{text-align:center}
+.bar{display:grid;grid-template-columns:90px 1fr auto;gap:8px;align-items:center;margin:8px 0;font-size:.85rem}.bar div{height:16px;background:var(--track);border-radius:calc(var(--rad)/2);overflow:hidden}.bar u{display:block;height:100%;background:var(--c)}
+input,select{background:transparent;border:var(--bd);border-radius:8px;padding:6px;width:64px}select{width:auto}input#ns{width:120px}
+label{display:inline-block;margin:4px 10px 4px 0;font-size:.85rem}
+</style></head><body>
+<div class="w">
+<header><h1 id="ti">⚔ ポモドーロ</h1><div id="lv" class="card"></div></header>
+<div id="th" class="t"></div>
+<main class="card t"><div id="subs"></div><div id="pre"></div><div class="rw"><svg viewBox="0 0 220 220"><circle class="tr" cx="110" cy="110" r="96"/><circle id="pg" cx="110" cy="110" r="96" transform="rotate(-90 110 110)"/></svg><div id="dg"></div></div>
+<div class="bt"><button class="b" id="go" onclick="tog()"></button> <button class="b s" onclick="rst()">リセット</button> <button class="b s" onclick="skip()">スキップ</button></div></main>
+<section class="card"><h2>📊 科目ごとの勉強時間</h2><div class="t"><button class="ch" onclick="rg('today')">今日</button><button class="ch" onclick="rg('week')">7日間</button><button class="ch" onclick="rg('all')">全期間</button></div><div id="ch"></div><div class="t" id="mn"></div></section>
+<section class="card"><h2>⚙ 設定</h2><label>集中(分)<input type="number" min="1" id="sf" onchange="cfg()"></label><label>休憩(分)<input type="number" min="1" id="sb" onchange="cfg()"></label><label>長い休憩(分)<input type="number" min="1" id="sl" onchange="cfg()"></label><br><label>終了音 <select id="sn" onchange="S.snd=this.value;save();chime()"><option value="harp">ハープ</option><option value="box">オルゴール</option><option value="bell">教会の鐘</option></select></label> <button class="ch" onclick="chime()">♪ 試す</button>
+<label><input type="checkbox" id="mx" style="width:auto" onchange="S.mix=this.checked;save()"> 音楽を流しながら使う(他のアプリの音楽を止めません)</label>
+<p style="font-size:.78rem;color:var(--mut)">4回集中すると長い休憩になります。他のアプリを開く場合は、スタート後にこの画面をそのままにして切り替えてください。</p></section>
+</div>
+<script>
+const $=s=>document.querySelector(s),K='pomo_v1',COL=['#e0585b','#4f8fe8','#46b37a','#e8a83c','#9a6ad8','#3cb8c8','#d96aa6'];
+let S={subs:['解剖生理','微生物学','英語','保健学概論','その他'].map((n,i)=>({n,c:COL[i]})),cur:0,f:25,b:5,l:15,pre:[15,25,50,90],one:false,mix:false,snd:'harp',t:null,log:{}};
+try{Object.assign(S,JSON.parse(localStorage.getItem(K)||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}};
+if(!S.t)S.t=matchMedia('(prefers-color-scheme: dark)').matches?'game':'elegant';
+let mode='f',run=false,rem=S.f*60,end=0,last=0,cyc=0,range='today',edit=false,ctx,n=0;
+const dur=()=>(mode=='f'?S.f:mode=='b'?S.b:S.l)*60;
+const day=(o=0)=>{const d=new Date();d.setDate(d.getDate()-o);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const fmt=s=>{const m=Math.round(s/60),h=Math.floor(m/60);return (h?h+'時間':'')+(m%60)+'分'};
+function wav(){const L=8000,b=new ArrayBuffer(44+L),v=new DataView(b),w=(o,s)=>[...s].forEach((c,i)=>v.setUint8(o+i,c.charCodeAt(0)));w(0,'RIFF');v.setUint32(4,36+L,true);w(8,'WAVEfmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,8000,true);v.setUint32(28,8000,true);v.setUint16(32,1,true);v.setUint16(34,8,true);w(36,'data');v.setUint32(40,L,true);for(let i=0;i<L;i++)v.setUint8(44+i,128);let s='';new Uint8Array(b).forEach(x=>s+=String.fromCharCode(x));return 'data:audio/wav;base64,'+btoa(s)}
+const sil=new Audio(wav());sil.loop=true;
+function ses(t){try{if(navigator.audioSession)navigator.audioSession.type=t}catch(e){}}
+function note(f,t,d,ty,g){const o=ctx.createOscillator(),a=ctx.createGain();o.type=ty;o.frequency.value=f;a.gain.setValueAtTime(0,t);a.gain.linearRampToValueAtTime(g,t+.01);a.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(a);a.connect(ctx.destination);o.start(t);o.stop(t+d+.05)}
+function chime(){ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();ctx.resume();ses(S.mix?'ambient':'playback');const t=ctx.currentTime+.05,s=S.snd;
+if(s=='harp')[261.6,329.6,392,523.3,659.3,784,1046.5].forEach((f,i)=>note(f,t+i*.16,2.4,'triangle',.28));
+if(s=='box')[659.3,784,1046.5,987.8,784,1318.5].forEach((f,i)=>{note(f,t+i*.22,1.3,'sine',.3);note(f*2,t+i*.22,.5,'sine',.08)});
+if(s=='bell')[1,2.76,5.4].forEach((m,i)=>{note(523.3*m,t,4,'sine',.3/(i+1));note(392*m,t+1.5,4,'sine',.22/(i+1))})}
+function tog(){if(run){run=false;sil.pause();save()}else{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();ctx.resume();ses(S.mix?'ambient':'playback');if(!S.mix)sil.play().catch(()=>{});run=true;last=Date.now();end=last+rem*1000}R()}
+function rst(){run=false;sil.pause();rem=dur();save();R()}
+function skip(){run=false;sil.pause();nxt();R()}
+function nxt(){if(S.one)mode='f';else if(mode=='f'){cyc++;mode=cyc%4==0?'l':'b'}else mode='f';rem=dur()}
+function tick(){if(!run)return;const now=Date.now(),d=Math.min((now-last)/1000,rem);last=now;rem=Math.max(0,(end-now)/1000);
+if(mode=='f'&&d>0){const k=day();S.log[k]=S.log[k]||{};const m=S.subs[S.cur].n;S.log[k][m]=(S.log[k][m]||0)+d}
+if(++n%20==0)save();
+if(rem<=0){run=false;chime();save();setTimeout(()=>sil.pause(),5000);nxt()}R()}
+setInterval(tick,250);
+function R(){const C=2*Math.PI*96,p=1-rem/dur(),t=Math.ceil(rem),mm=String(Math.floor(t/60)).padStart(2,'0'),ss=String(t%60).padStart(2,'0');
+$('#pg').style.strokeDasharray=C;$('#pg').style.strokeDashoffset=C*(1-p);$('#pg').style.stroke=mode=='f'?'var(--accent)':'#46b37a';
+$('#dg').innerHTML=`<small>${{f:'集中',b:'休憩',l:'長い休憩'}[mode]}</small>${mm}:${ss}`;document.title=mm+':'+ss;
+$('#go').textContent=run?'一時停止':'スタート';
+if(n%4==0||!run)RC()}
+function RC(){let tot=0;for(const k in S.log)for(const m in S.log[k])tot+=S.log[k][m];tot/=60;const lv=Math.floor(Math.sqrt(tot/10))+1,T=['みならい','せんし','ぼうけんしゃ','きし','ゆうしゃ','でんせつのゆうしゃ'];
+$('#lv').textContent=`Lv.${lv} ${T[Math.min(lv-1,5)]} ・ 次まで${Math.ceil(10*lv*lv-tot)}分`}
+function RS(){RP();RM();$('#subs').innerHTML=S.subs.map((s,i)=>`<button class="ch ${i==S.cur?'on':''}" style="--c:${s.c}" onclick="pick(${i})"><i></i>${s.n}${edit?`<b onclick="event.stopPropagation();del(${i})">✕</b>`:''}</button>`).join('')+`<button class="ch" onclick="edit=!edit;RS()">${edit?'完了':'✎ 編集'}</button>`+(edit?`<div><input id="ns" placeholder="科目名"><button class="ch" onclick="add()">追加</button></div>`:'')}
+function pick(i){S.cur=i;save();RS()}
+function RP(){$('#pre').innerHTML=S.pre.map(m=>`<button class="ch ${m==S.f?'on':''}" onclick="setMin(${m})">${m}分${edit?`<b onclick="event.stopPropagation();delP(${m})">✕</b>`:''}</button>`).join('')+`<div><input id="np" type="number" min="1" max="600" placeholder="分"><button class="ch" onclick="addP()">＋時間を追加</button></div><label><input type="checkbox" style="width:auto" ${S.one?'checked':''} onchange="S.one=this.checked;save()"> 休憩なし(1回だけ)</label>`}
+function setMin(m){if(run)return;mode='f';S.f=m;$('#sf').value=m;rem=dur();save();R();RP()}
+function addP(){const v=Math.round(+$('#np').value);if(!(v>=1&&v<=600))return;if(!S.pre.includes(v))S.pre.push(v);S.pre.sort((a,b)=>a-b);setMin(v)}
+function delP(m){if(S.pre.length<2)return;S.pre=S.pre.filter(x=>x!=m);save();RP()}
+function RM(){$('#mn').innerHTML=`<h2 style="margin-top:16px">✍ 勉強した時間を手動で追加</h2><select id="ms">${S.subs.map(s=>`<option>${s.n}</option>`).join('')}</select> <input id="mm" type="number" min="1" max="1440" placeholder="分"> <input id="md" type="date" style="width:auto" value="${day()}"> <button class="ch" onclick="addM()">記録する</button>${S.lastM?` <button class="ch" onclick="undoM()">直前を取り消し</button>`:''}`}
+function addM(){const m=Math.round(+$('#mm').value),k=$('#md').value||day(),b=$('#ms').value;if(!(m>=1&&m<=1440))return;S.log[k]=S.log[k]||{};S.log[k][b]=(S.log[k][b]||0)+m*60;S.lastM={k,n:b,s:m*60};save();RT();RC();RM()}
+function undoM(){const o=S.lastM;if(!o)return;S.log[o.k][o.n]=Math.max(0,(S.log[o.k][o.n]||0)-o.s);S.lastM=null;save();RT();RC();RM()}
+function add(){const v=$('#ns').value.replace(/[<>&"]/g,'').trim();if(!v)return;S.subs.push({n:v,c:COL[S.subs.length%7]});save();RS()}
+function del(i){if(S.subs.length<2)return;S.subs.splice(i,1);S.cur=0;save();RS()}
+function rg(r){range=r;RT()}
+function RT(){const ks=range=='today'?[day()]:range=='week'?[0,1,2,3,4,5,6].map(day):Object.keys(S.log),sum={};
+ks.forEach(k=>{const o=S.log[k]||{};for(const m in o)sum[m]=(sum[m]||0)+o[m]});
+const es=Object.entries(sum).filter(e=>e[1]>=30).sort((a,b)=>b[1]-a[1]),mx=es.length?es[0][1]:1;
+$('#ch').innerHTML=es.length?es.map(([m,s])=>{const o=S.subs.find(x=>x.n==m);return `<div class="bar"><span>${m}</span><div><u style="--c:${o?o.c:'#999'};width:${s/mx*100}%"></u></div><span>${fmt(s)}</span></div>`}).join(''):'<p class="t" style="color:var(--mut)">まだ記録がありません</p>'}
+setInterval(RT,5000);
+function cfg(){S.f=Math.max(1,+$('#sf').value||25);S.b=Math.max(1,+$('#sb').value||5);S.l=Math.max(1,+$('#sl').value||15);if(!run)rem=dur();save();R();RP()}
+function RTh(){document.body.dataset.t=S.t;$('#th').innerHTML=[['game','🎮 ゲーム風'],['elegant','✨ おしゃれ'],['land','🌳 景色'],['sky','☁️ 空'],['sea','🌊 海']].map(([k,l])=>`<button class="ch ${S.t==k?'on':''}" onclick="S.t='${k}';save();RTh()">${l}</button>`).join('')}
+$('#sf').value=S.f;$('#sb').value=S.b;$('#sl').value=S.l;$('#sn').value=S.snd;$('#mx').checked=S.mix;RTh();RS();RT();RC();R();
+if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+</script></body></html>
